@@ -5,6 +5,7 @@ System information utilities for OLED Monitor
 
 import os
 import subprocess
+import psutil
 import re
 from datetime import datetime, timedelta
 from typing import Tuple, Optional
@@ -36,22 +37,19 @@ def get_cpu_temp() -> float:
     
     return 0.0
 
+def get_cpu_percent() -> float:
+    return psutil.cpu_percent(interval=None, percpu=False)
+
 
 def get_ram_usage() -> Tuple[float, float, int]:
     """Get RAM usage in MB and percentage"""
-    try:
-        with open('/proc/meminfo', 'r') as f:
-            meminfo = f.read()
-        
-        # Parse memory values (in kB)
-        mem_total = int(re.search(r'MemTotal:\s+(\d+)\s+kB', meminfo).group(1)) / 1024.0  # MB
-        mem_available = int(re.search(r'MemAvailable:\s+(\d+)\s+kB', meminfo).group(1)) / 1024.0  # MB
-        mem_used = mem_total - mem_available
-        mem_percent = int((mem_used / mem_total) * 100)
-        
-        return mem_used, mem_total, mem_percent
-    except:
-        return 0.0, 0.0, 0
+    mem = psutil.virtual_memory()
+
+    mem_used = mem.used / (1024 ** 3)
+    mem_total = mem.total / (1024 ** 3)
+    mem_percent = mem.percent
+    
+    return mem_used, mem_total, mem_percent
 
 
 def format_ram_usage(ram: float, with_units: bool) -> str: # passed in MB
