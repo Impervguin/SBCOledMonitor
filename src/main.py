@@ -46,14 +46,14 @@ class OLEDMonitor:
     
     def setup_logging(self):
         """Configure logging with rotation"""
-        log_dir = Path(self.config.log_dir)
+        log_dir = Path(self.config['log_dir'])
         log_dir.mkdir(parents=True, exist_ok=True)
         
         log_file = log_dir / "app.log"
         
         # Create logger
         self.logger = logging.getLogger("oled-monitor")
-        self.logger.setLevel(logging._nameToLevel[self.config.log_level])
+        self.logger.setLevel(logging._nameToLevel[self.config['log_level']])
         
         # File handler with rotation
         file_handler = logging.handlers.RotatingFileHandler(
@@ -206,7 +206,7 @@ class OLEDMonitor:
             sys.exit(1)
         
         # Get update interval from config
-        update_interval = self.config.get('app', {}).get('update_interval', 2)
+        update_interval = self.config['app']['update_interval']
         
         self.logger.info(f"Update interval: {update_interval} seconds")
         self.logger.info("Service is running. Press Ctrl+C to stop.")
