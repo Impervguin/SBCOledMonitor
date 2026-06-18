@@ -181,7 +181,7 @@ class OLEDMonitor:
                 uptime_width, uptime_height = self.get_text_dimensions(uptime_text, font_small)
                 
                 # Right-aligned
-                x_pos_uptime = width - uptime_width - 2
+                x_pos_uptime = width - uptime_width - 4
 
                 draw.text((x_pos_uptime, 0), uptime_text, font=font_medium, fill="white")
                 
