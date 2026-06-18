@@ -41,6 +41,8 @@ class OLEDMonitor:
         # Setup signal handlers
         signal.signal(signal.SIGTERM, self._signal_handler)
         signal.signal(signal.SIGINT, self._signal_handler)
+
+        self.load_config()
     
     def setup_logging(self):
         """Configure logging with rotation"""
@@ -74,13 +76,13 @@ class OLEDMonitor:
         try:
             config_file = Path(self.config_path)
             if not config_file.exists():
-                self.logger.error(f"Config file not found: {self.config_path}")
+                logging.error(f"Config file not found: {self.config_path}")
                 return False
             
             with open(config_file, 'r') as f:
                 self.config = yaml.safe_load(f)
             
-            self.logger.info(f"Configuration loaded from {self.config_path}")
+            logging.info(f"Configuration loaded from {self.config_path}")
             return True
             
         except Exception as e:
@@ -148,8 +150,8 @@ class OLEDMonitor:
             uptime_str = format_uptime(uptime_seconds)
                         
             # Create image
-            width = self.config.get('display', {}).get('width', 128)
-            height = self.config.get('display', {}).get('height', 32)
+            width = self.config['display']['width']
+            height = self.config['display']['height']
             
             with canvas(self.device) as draw:
                 # Clear background
