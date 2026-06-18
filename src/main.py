@@ -159,12 +159,33 @@ class OLEDMonitor:
                 try:
                     # Try to load system fonts
                     font_large = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 14)
+                    font_medium = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 10)
                     font_small = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 10)
                 except:
                     # Fallback to default PIL font
                     font_large = ImageFont.load_default()
                     font_small = ImageFont.load_default()
                 
+                # Line 1: Hostname (large font, left-aligned or centered)
+                # Calculate available space
+                hostname_text = hostname[:20]
+                
+                # Get dimensions of hostname text
+                hostname_width, hostname_height = self.get_text_dimensions(hostname_text, font_large)
+                
+                #Left-aligned with padding
+                x_pos = 2 
+                draw.text((x_pos, 0), hostname_text, font=font_large, fill="white")
+                
+                # Get dimensions of uptime text
+                uptime_text = f" {uptime_str}"  # Add space for separation
+                uptime_width, uptime_height = self.get_text_dimensions(uptime_text, font_small)
+                
+                # Right-aligned
+                x_pos_uptime = width - uptime_width - 2
+
+                draw.text((x_pos_uptime, 0), uptime_text, font=font_medium, fill="white")
+
                 # Line 1: Hostname (centered)
                 self.draw_text_centered(draw, hostname[:20] + " | " + uptime_str, 0, font_large, width)
                 
