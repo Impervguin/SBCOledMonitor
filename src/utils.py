@@ -45,8 +45,8 @@ def get_ram_usage() -> Tuple[float, float, int]:
     """Get RAM usage in MB and percentage"""
     mem = psutil.virtual_memory()
 
-    mem_used = mem.used / (1024 ** 3)
-    mem_total = mem.total / (1024 ** 3)
+    mem_used = mem.used / (1024 ** 2)
+    mem_total = mem.total / (1024 ** 2)
     mem_percent = mem.percent
     
     return mem_used, mem_total, mem_percent
