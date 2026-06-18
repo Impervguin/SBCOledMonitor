@@ -86,7 +86,7 @@ class OLEDMonitor:
             return True
             
         except Exception as e:
-            self.logger.error(f"Failed to load config: {e}")
+            logging.error(f"Failed to load config: {e}")
             return False
     
     def init_display(self) -> bool:
