@@ -174,24 +174,20 @@ class OLEDMonitor:
                 hostname_width, hostname_height = self.get_text_dimensions(hostname_text, font_large)
                 
                 #Left-aligned with padding
-                x_pos = 2 
-                draw.text((x_pos, 0), hostname_text, font=font_large, fill="white")
+                draw.text((0, 0), hostname_text, font=font_large, fill="white")
                 
                 # Get dimensions of uptime text
                 uptime_text = f" {uptime_str}"  # Add space for separation
                 uptime_width, uptime_height = self.get_text_dimensions(uptime_text, font_small)
                 
                 # Right-aligned
-                x_pos_uptime = width - uptime_width - 2
+                x_pos_uptime = width - uptime_width
 
                 draw.text((x_pos_uptime, 0), uptime_text, font=font_medium, fill="white")
-
-                # Line 1: Hostname (centered)
-                self.draw_text_centered(draw, hostname[:20] + " | " + uptime_str, 0, font_large, width)
                 
                 # Line 2: System info
                 line2 = f"{cpu_percent:2.1f}% | {cpu_temp:>3.0f}°C | {format_ram_usage(ram_usage, True)}"
-                self.draw_text_centered(draw, line2, 16, font_small, width)
+                self.draw_text_centered(draw, line2, 22, font_small, width)
                 
                 self.logger.debug(f"Display updated: {hostname} | Temp: {cpu_temp}°C | RAM: {ram_percent}% | Uptime: {uptime_str}")
             
