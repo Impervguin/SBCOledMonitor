@@ -159,7 +159,7 @@ class OLEDMonitor:
                 try:
                     # Try to load system fonts
                     font_large = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 16)
-                    font_small = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 10)
+                    font_small = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 9)
                 except:
                     # Fallback to default PIL font
                     font_large = ImageFont.load_default()
@@ -169,8 +169,11 @@ class OLEDMonitor:
                 self.draw_text_centered(draw, hostname[:20], 0, font_large, width)
                 
                 # Line 2: System info
-                line2 = f"{cpu_percent:2.1f}% {cpu_temp:>3.0f}°C {format_ram_usage(ram_usage, True)} {uptime_str}"
-                self.draw_text_centered(draw, line2, 18, font_small, width)
+                line2 = f"{cpu_percent:2.1f}% {cpu_temp:>3.0f}°C {format_ram_usage(ram_usage, True)}/{format_ram_usage(ram_total, True)}"
+                self.draw_text_centered(draw, line2, 17, font_small, width)
+
+                # Line 3: Uptime
+                self.draw_text_centered(draw, uptime_str, 27, font_small, width)
                 
                 self.logger.debug(f"Display updated: {hostname} | Temp: {cpu_temp}°C | RAM: {ram_percent}% | Uptime: {uptime_str}")
             
