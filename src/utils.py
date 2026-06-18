@@ -57,7 +57,7 @@ def format_ram_usage(ram: float, with_units: bool) -> str: # passed in MB
     if ram > 1024.0:
         ram /= 1024.0
         units = "GB"
-    return f"{ram / 1024.0:3.1f}{units if with_units else ""}"
+    return f"{ram:3.1f}{units if with_units else ""}"
 
 
 

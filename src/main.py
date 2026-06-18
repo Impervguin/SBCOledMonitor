@@ -158,22 +158,19 @@ class OLEDMonitor:
                 # Try to load fonts with fallback
                 try:
                     # Try to load system fonts
-                    font_large = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 16)
-                    font_small = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 9)
+                    font_large = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 14)
+                    font_small = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 10)
                 except:
                     # Fallback to default PIL font
                     font_large = ImageFont.load_default()
                     font_small = ImageFont.load_default()
                 
                 # Line 1: Hostname (centered)
-                self.draw_text_centered(draw, hostname[:20], 0, font_large, width)
+                self.draw_text_centered(draw, hostname[:20] + " | " + uptime_str, 0, font_large, width)
                 
                 # Line 2: System info
-                line2 = f"{cpu_percent:2.1f}% {cpu_temp:>3.0f}°C {format_ram_usage(ram_usage, True)}/{format_ram_usage(ram_total, True)}"
-                self.draw_text_centered(draw, line2, 17, font_small, width)
-
-                # Line 3: Uptime
-                self.draw_text_centered(draw, uptime_str, 27, font_small, width)
+                line2 = f"{cpu_percent:2.1f}% | {cpu_temp:>3.0f}°C | {format_ram_usage(ram_usage, True)}"
+                self.draw_text_centered(draw, line2, 16, font_small, width)
                 
                 self.logger.debug(f"Display updated: {hostname} | Temp: {cpu_temp}°C | RAM: {ram_percent}% | Uptime: {uptime_str}")
             
