@@ -54,6 +54,15 @@ def get_ram_usage() -> Tuple[float, float, int]:
         return 0.0, 0.0, 0
 
 
+def format_ram_usage(ram: float, with_units: bool) -> str: # passed in MB
+    units = "MB"
+    if ram > 1024.0:
+        ram /= 1024.0
+        units = "GB"
+    return f"{ram / 1024.0:3.1f}{units if with_units else ""}"
+
+
+
 def get_uptime() -> int:
     """Get system uptime in seconds"""
     try:

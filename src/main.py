@@ -23,7 +23,8 @@ from src.utils import (
     get_cpu_temp,
     get_ram_usage,
     get_uptime,
-    format_uptime
+    format_uptime,
+    format_ram_usage
 )
 
 
@@ -87,6 +88,7 @@ class OLEDMonitor:
             
         except Exception as e:
             logging.error(f"Failed to load config: {e}")
+            raise e
             return False
     
     def init_display(self) -> bool:
@@ -113,7 +115,6 @@ class OLEDMonitor:
             
             # Clear display
             self.device.clear()
-            self.device.display()
             
             return True
             
@@ -123,13 +124,8 @@ class OLEDMonitor:
     
     def get_text_dimensions(self, text: str, font: ImageFont) -> tuple:
         """Get text dimensions using PIL"""
-        if hasattr(font, 'getbbox'):
-            # For newer PIL versions
-            bbox = font.getbbox(text)
-            return bbox[2] - bbox[0], bbox[3] - bbox[1]
-        else:
-            # For older PIL versions
-            return font.getsize(text)
+        bbox = font.getbbox(text)
+        return bbox[2] - bbox[0], bbox[3] - bbox[1]
     
     def draw_text_centered(self, draw, text: str, y: int, font: ImageFont, 
                            width: int = 128) -> tuple:
@@ -160,8 +156,8 @@ class OLEDMonitor:
                 # Try to load fonts with fallback
                 try:
                     # Try to load system fonts
-                    font_large = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 10)
-                    font_small = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 8)
+                    font_large = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 16)
+                    font_small = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 12)
                 except:
                     # Fallback to default PIL font
                     font_large = ImageFont.load_default()
@@ -171,20 +167,8 @@ class OLEDMonitor:
                 self.draw_text_centered(draw, hostname[:20], 0, font_large, width)
                 
                 # Line 2: System info
-                line2 = f"{cpu_temp:>3.0f}°C {ram_percent:>3.0f}% {uptime_str}"
-                self.draw_text_centered(draw, line2, 12, font_small, width)
-                
-                # # Line 3: Network traffic
-                # # Check if there's room for third line
-                # line3 = f"{rx_str} {tx_str}"
-                # line3_width, _ = self.get_text_dimensions(line3, font_small)
-                # if line3_width <= width:
-                #     self.draw_text_centered(draw, line3, 22, font_small, width)
-                # else:
-                #     # If too long, split into two lines
-                #     rx_text = f"⬇{self.format_traffic(int(rx_speed if self.last_tx > 0 else rx_bytes))}/s"
-                #     tx_text = f"⬆{self.format_traffic(int(tx_speed if self.last_tx > 0 else tx_bytes))}/s"
-                #     self.draw_text_centered(draw, rx_text, 22, font_small, width)
+                line2 = f"{cpu_temp:>3.0f}°C {format_ram_usage(ram_usage, False)}/{format_ram_usage(ram_total, True)} {uptime_str}"
+                self.draw_text_centered(draw, line2, 18, font_small, width)
                 
                 self.logger.debug(f"Display updated: {hostname} | Temp: {cpu_temp}°C | RAM: {ram_percent}% | Uptime: {uptime_str}")
             
@@ -226,7 +210,6 @@ class OLEDMonitor:
         self.running = False
         if self.device:
             self.device.clear()
-            self.device.display()
         sys.exit(0)
 
 

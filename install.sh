@@ -129,7 +129,8 @@ echo "  - $DATA_DIR (data)"
 print_info "Copying application files..."
 
 # Copy source code
-cp -r ./src/* "$INSTALL_DIR/"
+mkdir -p "$INSTALL_DIR/src/"
+cp -r ./src/* "$INSTALL_DIR/src/"
 cp ./requirements.txt "$INSTALL_DIR/"
 
 # Set ownership of application files
