@@ -207,39 +207,7 @@ if [ -f "$TEMPLATE_SERVICE" ]; then
     
     print_success "Created systemd service from template: $SERVICE_FILE"
 else
-    print_warning "Template not found: $TEMPLATE_SERVICE"
-    # Create default service file
-    cat <<EOF > "$SERVICE_FILE"
-[Unit]
-Description=OLED Monitor Service
-After=network.target
-
-[Service]
-Type=simple
-User=$APP_USER
-Group=$APP_GROUP
-SupplementaryGroups=i2c
-WorkingDirectory=$INSTALL_DIR
-
-# Environment
-Environment="PATH=$INSTALL_DIR/venv/bin"
-EnvironmentFile=$CONFIG_DIR/.env
-
-# Start the application
-ExecStart=$INSTALL_DIR/venv/bin/python -m src.main
-Restart=always
-RestartSec=5
-StandardOutput=append:$LOG_DIR/app.log
-StandardError=append:$LOG_DIR/error.log
-
-# Security hardening
-NoNewPrivileges=true
-PrivateTmp=true
-
-[Install]
-WantedBy=multi-user.target
-EOF
-    print_warning "Created default systemd service (no template found)"
+    print_errot "Template not found: $TEMPLATE_SERVICE"
 fi
 
 # Set permissions

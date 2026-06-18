@@ -1,6 +1,7 @@
 # {{APP_NAME}} Configuration
 app_name: {{APP_NAME}}
 log_level: INFO
+log_dir: {{LOG_DIR}}
 
 i2c:
   bus: 7
@@ -9,6 +10,7 @@ i2c:
 display:
   width: 128
   height: 32
+  rotate: 0
 
 app:
   debug: false
