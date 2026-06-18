@@ -1,0 +1,15 @@
+# {{APP_NAME}} Configuration
+app_name: {{APP_NAME}}
+log_level: INFO
+
+i2c:
+  bus: 7
+  address: 0x3C  # OLED I2C address
+
+display:
+  width: 128
+  height: 32
+
+app:
+  debug: false
+  update_interval: 2
