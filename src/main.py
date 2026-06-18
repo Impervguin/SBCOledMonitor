@@ -158,7 +158,7 @@ class OLEDMonitor:
                 # Try to load fonts with fallback
                 try:
                     # Try to load system fonts
-                    font_large = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 14)
+                    font_large = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 16)
                     font_medium = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 10)
                     font_small = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 10)
                 except:
@@ -181,7 +181,7 @@ class OLEDMonitor:
                 uptime_width, uptime_height = self.get_text_dimensions(uptime_text, font_small)
                 
                 # Right-aligned
-                x_pos_uptime = width - uptime_width
+                x_pos_uptime = width - uptime_width - 2
 
                 draw.text((x_pos_uptime, 0), uptime_text, font=font_medium, fill="white")
                 
