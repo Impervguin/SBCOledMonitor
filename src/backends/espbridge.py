@@ -36,6 +36,8 @@ class ESPBridgeBackend(DisplayBackend):
         self._bridge.i2c.init(
             sda=cfg.sda,
             scl=cfg.scl,
+            width=self._cfg.display.width,
+            height=self._cfg.display.height,
         )
 
         self._oled = OLED(self._bridge)
