@@ -23,7 +23,7 @@ class DisplayConfig:
 @dataclass(slots=True)
 class LumaConfig:
     bus: int
-    address: int
+    address: str
 
 
 @dataclass(slots=True)
