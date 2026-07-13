@@ -30,5 +30,5 @@ class LumaConfig:
 @dataclass(slots=True)
 class AppConfig:
     display: DisplayConfig
-    i2c: I2CConfig | None = None
+    i2c: LumaConfig | None = None
     espbridge: ESPBridgeConfig | None = None
