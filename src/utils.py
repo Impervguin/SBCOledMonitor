@@ -1,8 +1,3 @@
-#!/usr/bin/env python3
-"""
-System information utilities for OLED Monitor
-"""
-
 import os
 import subprocess
 import psutil
