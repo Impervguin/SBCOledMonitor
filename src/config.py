@@ -1,10 +1,6 @@
 from dataclasses import dataclass
 from enum import StrEnum
 
-
-
-
-
 class BackendType(StrEnum):
     luma = "luma"
     espbridge = "espbridge"
@@ -21,6 +17,8 @@ class DisplayConfig:
 @dataclass(slots=True)
 class ESPBridgeConfig:
     port: str
+    sda: int
+    scl: int
     ble: bool = False
 
 @dataclass(slots=True)

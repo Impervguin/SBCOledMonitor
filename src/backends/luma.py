@@ -1,44 +1,44 @@
-# src/backends/luma.py
-
 from luma.core.interface.serial import i2c
 from luma.core.render import canvas
 from luma.oled.device import ssd1306
 
+from src.config import AppConfig
 from .base import DisplayBackend
 
 
 class LumaBackend(DisplayBackend):
+    def __init__(self, config: AppConfig):
+        if config.luma is None:
+            raise ValueError("Luma backend requires luma configuration")
 
-    def __init__(self, config: dict):
-        self._config = config
+        self._cfg = config
         self._device = None
 
     @property
-    def width(self):
-        return self._config["display"]["width"]
+    def width(self) -> int:
+        return self._cfg.display.width
 
     @property
-    def height(self):
-        return self._config["display"]["height"]
+    def height(self) -> int:
+        return self._cfg.display.height
 
-    def initialize(self):
-
+    def initialize(self) -> None:
         serial = i2c(
-            port=self._config["i2c"]["bus"],
-            address=int(self._config["i2c"]["address"]),
+            port=self._cfg.luma.bus,
+            address=self._cfg.luma.address,
         )
 
         self._device = ssd1306(
             serial,
             width=self.width,
             height=self.height,
-            rotate=self._config["display"]["rotate"],
+            rotate=self._cfg.display.rotate,
         )
 
         self._device.clear()
 
-    def clear(self):
-        self._device.clear()
-
-    def canvas(self):
+    def draw(self):
         return canvas(self._device)
+
+    def clear(self) -> None:
+        self._device.clear()
