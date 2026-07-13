@@ -1,9 +1,5 @@
 # {{APP_NAME}} Configuration
-app_name: {{APP_NAME}}
-log_level: INFO
-log_dir: {{LOG_DIR}}
-
-i2c:
+luma:
   bus: 7
   address: 0x3C  # OLED I2C address
 
@@ -13,5 +9,8 @@ display:
   rotate: 0
 
 app:
+  app_name: {{APP_NAME}}
+  log_level: INFO
+  log_dir: {{LOG_DIR}}
   debug: false
   update_interval: 2
