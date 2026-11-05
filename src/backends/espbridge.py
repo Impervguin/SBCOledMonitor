@@ -1,5 +1,5 @@
-from espbridge import Bridge
-from espbridge.drivers.oled import OLED
+from esplink import Bridge
+from esplink.drivers.oled import OLED
 
 from src.config import AppConfig
 from .base import DisplayBackend
@@ -33,15 +33,14 @@ class ESPBridgeBackend(DisplayBackend):
 
         self._bridge.__enter__()
 
-        self._bridge.i2c.init(
-            sda=cfg.sda,
-            scl=cfg.scl,
-        )
-
+        # OLED сам инициализирует I2C-шину на ESP32 (init_bus=True)
         self._oled = OLED(
             self._bridge,
+            sda=cfg.sda,
+            scl=cfg.scl,
             width=self._cfg.display.width,
-            height=self._cfg.display.height,)
+            height=self._cfg.display.height,
+        )
 
     def draw(self):
         return self._oled.draw()
